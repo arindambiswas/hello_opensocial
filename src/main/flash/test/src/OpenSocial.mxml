@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fab:FlexApplication 
+	xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	xmlns:fab="org.puremvc.as3.multicore.utilities.fabrication.components.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import opensocial.shell.controller.ShellStartupCommand;
+			import flash.utils.getQualifiedClassName;
+			
+			public static var NAME:String = getQualifiedClassName(OpenSocial);
+			
+			override public function getStartupCommand():Class
+			{
+				return ShellStartupCommand;
+			}
+			
+			override public function getClassByName(path:String):Class 
+			{
+        		return getDefinitionByName(path) as Class;      
+			}
+			
+			private function onInitialize(e:FlexEvent):void
+			{
+				
+			}
+		]]>
+		
+	</mx:Script>
+	
+</fab:FlexApplication>
