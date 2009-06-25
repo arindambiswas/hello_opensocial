@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 24, 2009 4:49:03 PM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.fuzify.isms.hb.MessageStatus" table="messagestatus" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="sequence">
+                <param name="sequence">id_seq</param>
+            </generator>
+        </id>
+        <property name="messageStatusId" type="int">
+            <column name="messagestatusid" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" />
+        </property>
+        <set name="membermessages" inverse="true">
+            <key>
+                <column name="messagestatusid" />
+            </key>
+            <one-to-many class="com.fuzify.isms.hb.MemberMessage" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 24, 2009 4:49:03 PM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.fuzify.isms.hb.MemberContact" table="membercontact" schema="public">
+        <id name="memberContactId" type="int">
+            <column name="membercontactid" />
+            <generator class="sequence">
+                <param name="sequence">memberContactId_seq</param>
+            </generator>
+        </id>
+        <many-to-one name="member" class="com.fuzify.isms.hb.Member" fetch="select">
+            <column name="memberid" not-null="true" />
+        </many-to-one>
+        <property name="email" type="string">
+            <column name="email" />
+        </property>
+        <property name="mobile" type="int">
+            <column name="mobile" not-null="true" />
+        </property>
+        <property name="firstname" type="string">
+            <column name="firstname" />
+        </property>
+        <property name="lastname" type="string">
+            <column name="lastname" />
+        </property>
+    </class>
+</hibernate-mapping>

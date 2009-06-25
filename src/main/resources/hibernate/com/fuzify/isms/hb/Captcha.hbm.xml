@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 24, 2009 4:49:03 PM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.fuzify.isms.hb.Captcha" table="captcha" schema="public">
+        <id name="captchaId" type="int">
+            <column name="captchaid" />
+            <generator class="sequence">
+                <param name="sequence">captchaId_seq</param>
+            </generator>
+        </id>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="imageUrl" type="string">
+            <column name="imageurl" />
+        </property>
+        <property name="configUrl" type="string">
+            <column name="configurl" />
+        </property>
+        <set name="membermessages" inverse="true">
+            <key>
+                <column name="captchaid" />
+            </key>
+            <one-to-many class="com.fuzify.isms.hb.MemberMessage" />
+        </set>
+    </class>
+</hibernate-mapping>

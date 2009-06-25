@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+	<type-mapping>
+		<sql-type jdbc-type="INTEGER" hibernate-type="int"/>
+		<sql-type jdbc-type="FLOAT" hibernate-type="float"/>
+		<sql-type jdbc-type="REAL" hibernate-type="float"/>
+		<sql-type jdbc-type="NUMERIC" hibernate-type="long"/>
+		<sql-type jdbc-type="VARCHAR" length="1" hibernate-type="char"/>
+		<sql-type jdbc-type="VARCHAR" hibernate-type="string"/>
+	</type-mapping>
+
+	<table-filter match-name="captcha" match-schema="public" 
+		package="com.mixercast.dashboard.hb" />
+	<table-filter match-name="facebookmember" match-schema="public" 
+		package="com.mixercast.dashboard.hb" />
+	<table-filter match-name="member" match-schema="public" 
+		package="com.mixercast.dashboard.hb" />
+	<table-filter match-name="membercontact" match-schema="public" 
+		package="com.mixercast.dashboard.hb" />
+	<table-filter match-name="membermessage" match-schema="public" 
+		package="com.mixercast.dashboard.hb" />
+	<table-filter match-name="memberstatus" match-schema="public" 
+		package="com.mixercast.dashboard.hb" />
+	<table-filter match-name="messagestatus" match-schema="public" 
+		package="com.mixercast.dashboard.hb" />
+	<table-filter match-name="orkutmember" match-schema="public" 
+		package="com.mixercast.dashboard.hb" />
+
+	<table schema="public" name="captcha" class="com.fuzify.isms.hb.Captcha">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">captchaId_seq</param>
+			</generator>
+			<key-column name="captchaid" property="captchaId" />
+		</primary-key>
+		<column name="name" property="name" />
+		<column name="imageurl" property="imageUrl" />
+		<column name="configurl" property="configUrl" />
+	</table>
+
+	<table schema="public" name="captcha" class="com.fuzify.isms.hb.Captcha">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">captchaId_seq</param>
+			</generator>
+			<key-column name="captchaid" property="captchaId" />
+		</primary-key>
+		<column name="name" property="name" />
+		<column name="imageurl" property="imageUrl" />
+		<column name="configurl" property="configUrl" />
+	</table>
+	
+	<table schema="public" name="facebookmember" class="com.fuzify.isms.hb.FacebookMember">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">facebookMemberId_seq</param>
+			</generator>
+			<key-column name="facebookmemberid" property="facebookMemberId" />
+		</primary-key>
+		<column name="memberid" property="memberId" />
+		<column name="facebookid" property="facebookId" />
+	</table>	
+
+	<table schema="public" name="member" class="com.fuzify.isms.hb.Member">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">memberId_seq</param>
+			</generator>
+			<key-column name="memberid" property="memberId" />
+		</primary-key>
+		<column name="email" property="email" />
+		<column name="mobile" property="mobile" />
+		<column name="password" property="password" />
+		<column name="statusid" property="statusId" />
+	</table>
+	
+	<table schema="public" name="membercontact" class="com.fuzify.isms.hb.MemberContact">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">memberContactId_seq</param>
+			</generator>
+			<key-column name="membercontactid" property="memberContactId" />
+		</primary-key>
+		<column name="memberid" property="memberId" />
+		<column name="email" property="email" />
+		<column name="mobile" property="mobile" />
+		<column name="firstname" property="firstname" />
+		<column name="lastname" property="lastname" />
+	</table>
+	
+	<table schema="public" name="membermessage" class="com.fuzify.isms.hb.MemberMessage">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">memberMessageId_seq</param>
+			</generator>
+			<key-column name="membermessageid" property="memberMessageId" />
+		</primary-key>
+		<column name="mobile" property="mobile" />
+		<column name="message" property="message" />
+		<column name="messageid" property="messageId" />
+		<column name="messagestatusid" property="messageStatusId" />
+		<column name="created" property="created" />
+		<column name="captchaid" property="captchaId" />
+	</table>
+	
+	<table schema="public" name="memberstatus" class="com.fuzify.isms.hb.MemberStatus">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">statusId_seq</param>
+			</generator>
+			<key-column name="statusid" property="statusId" />
+		</primary-key>
+		<column name="status" property="status" />
+	</table>				
+
+	<table schema="public" name="messagestatus" class="com.fuzify.isms.hb.MessageStatus">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">id_seq</param>
+			</generator>
+			<key-column name="id" property="id" />
+		</primary-key>
+		<column name="messagestatusid" property="messageStatusId" />
+		<column name="status" property="status" />
+	</table>
+	
+	<table schema="public" name="orkutmember" class="com.fuzify.isms.hb.OrkutMember">
+		<primary-key>
+			<generator class="sequence"> 
+				<param name="sequence">orkutMemberId_seq</param>
+			</generator>
+			<key-column name="orkutmemberid" property="orkutMemberId" />
+		</primary-key>
+		<column name="memberid" property="memberId" />
+		<column name="orkutid" property="orkutId" />
+	</table>					
+	
+</hibernate-reverse-engineering>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 24, 2009 4:49:03 PM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.fuzify.isms.hb.MemberMessage" table="membermessage" schema="public">
+        <id name="memberMessageId" type="int">
+            <column name="membermessageid" />
+            <generator class="sequence">
+                <param name="sequence">memberMessageId_seq</param>
+            </generator>
+        </id>
+        <many-to-one name="captcha" class="com.fuzify.isms.hb.Captcha" fetch="select">
+            <column name="captchaid" />
+        </many-to-one>
+        <many-to-one name="messagestatus" class="com.fuzify.isms.hb.MessageStatus" fetch="select">
+            <column name="messagestatusid" />
+        </many-to-one>
+        <property name="mobile" type="int">
+            <column name="mobile" not-null="true" />
+        </property>
+        <property name="message" type="string">
+            <column name="message" not-null="true" />
+        </property>
+        <property name="messageId" type="int">
+            <column name="messageid" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="29" />
+        </property>
+    </class>
+</hibernate-mapping>

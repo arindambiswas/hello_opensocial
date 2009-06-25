@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 24, 2009 4:49:03 PM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.fuzify.isms.hb.OrkutMember" table="orkutmember" schema="public">
+        <id name="orkutMemberId" type="java.lang.Long">
+            <column name="orkutmemberid" />
+            <generator class="sequence">
+                <param name="sequence">orkutMemberId_seq</param>
+            </generator>
+        </id>
+        <property name="memberId" type="java.lang.Long">
+            <column name="memberid" />
+        </property>
+        <property name="orkutId" type="java.lang.Long">
+            <column name="orkutid" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,4 +1,4 @@
-<project name="protocol_buffer" default="all">
+<project name="iSMS" default="all">
 
 	<!-- Load properties specific to the user's system -->
 	<property file="user.properties"/>
@@ -10,51 +10,111 @@
 	<property name="webconfigdir" value="${basedir}/src/main/webapp"/>
 	<property name="librarydir" value="${basedir}/lib"/>
 	<property name="resourcedir" value="${basedir}/src/main/resources"/>
+	<property name="hibernateconfigdir" value="${resourcedir}/hibernate"/>
+	<property name="hibernateproperties" value="hibernate.properties"/>
+	<property name="reveng" value="hibernate.reveng.xml"/>
+	<property name="log4j"  value="log4j.properties"/>
 	<property name="webappdir" value="${basedir}/webapp"/>
 	<property name="classesdir" value="${webappdir}/WEB-INF/classes"/>
 	<property name="tomcatlib" value="${tomcat}/common/lib"/>
+	<property name="tmp" value="tmp"/>
+	<property name="serial.file" value="suid.properties"/>
+	<property name="serial.values" value=""/>
+	<property name="hbdir" value="${javadir}/com/mixercast/pointnine/hb"/>
 	<property name="build" value="${basedir}/build"/>
 	
 	<path id="libraries">
-	    <fileset dir="${librarydir}">
-	    	<include name="**/*.jar"/>
-	    </fileset>
-	    <fileset dir="${tomcatlib}">
-		    <include name="**/*.jar"/>
-	    </fileset>
-	    <path location="${resourcedir}"/>
+		    <path location="${hibernateconfigdir}"/>
+		    <fileset dir="${librarydir}">
+		    	<include name="**/*.jar"/>
+		    </fileset>
+		    <fileset dir="${tomcatlib}">
+			    <include name="**/*.jar"/>
+		    </fileset>
+		    <path location="${resourcedir}"/>
 
-		<path location="${webappdir}/WEB-INF/classes"/>
-    	<path location="${tmp}" />
-    </path>
+			<path location="${webappdir}/WEB-INF/classes"/>
+	    	<path location="${tmp}" />
+	        </path>
+	    <!--
+		hibernate task
+	     -->	
+	    <fileset dir="${javadir}/app/hb" id="hb.src">
+	        <include name="**/*.java"/>
+	        <include name="Serializable Classes"/>
+	    </fileset>
+		<taskdef name="hibernatetool" 
+	             classname="org.hibernate.tool.ant.HibernateToolTask" 
+	             classpathref="libraries" />
 	    
-	<property name="libraries" refid="libraries" />
+
+	   <!--
+		Clean up all generated files
+	    -->	
+		<property name="libraries" refid="libraries" />
 
 	<target name="clean">
+		<echo message="${libraries}"/>
 		<delete dir="${webappdir}/WEB-INF"/>
+
+		<!-- this is not good but its the only way to clean up hibernate generated code -->
+		<delete dir="${javadir}/com/mixercast/pointnine/hb"/>
+
+		<delete includeemptydirs="true">
+			<fileset dir="${hibernateconfigdir}">
+				<patternset id="hibernatefiles">
+					<include name="**/*.*"/>
+					<include name="**/*"/>
+					<exclude name="${hibernateproperties}"/>
+					<exclude name="*.reveng.xml"/>
+					<exclude name="*.cfg.xml"/>
+					<exclude name="*.ftl"/>
+					<exclude name="${log4j}"/>
+				</patternset>
+			</fileset>
+		</delete>
 	</target>
 
+	 <target name="reveng">
+		<echo message="hibernate config used ${hibernateconfigdir}/hibernate.properties"/>
+	        <hibernatetool destdir="${javadir}">
+	    	 	<jdbcconfiguration propertyfile="${hibernateconfigdir}/hibernate.properties" 
+	        		packagename="com.mixercast.pointnine.hb"
+	    	 		revengfile="${hibernateconfigdir}/hibernate.reveng.xml"
+	         		 /> <!-- revengfile="${hibernateconfigdir}/hibernate.reveng.xml" -->
+	         	<hbm2hbmxml destdir="${hibernateconfigdir}" />
+	        	<hbm2java jdk5="false"/>
+	        </hibernatetool>
+	</target>
+	
 	<target name="compile">
 		<mkdir dir="${classesdir}"/>
 		<javac srcdir="${javadir}"
              destdir="${classesdir}"
-             classpathref="libraries" debug="off" debuglevel="lines,var,source" 
-			 deprecation="on" source="1.5" target="1.5">
+             classpathref="libraries" debug="on" debuglevel="lines,var,source" deprecation="on" source="1.6" target="1.6">
 		</javac>
 	</target>
 
 	<target name="deploy">
-		<echo message="Copy to WEB-INF/*.xml files"/>
+		<echo message="Copy the WEB-INF/*.xml files"/>
 		<copy todir="${webappdir}">
 			<fileset dir="${webconfigdir}">
+				<!--
+				<include name="**/*.xml"/>
+				<include name="**/*.txt"/>
+				-->
 				<include name="**" />
 			</fileset>
 		</copy>
-		
-		<echo message="Deploy: configs"/>
+		<echo message="Deploy: Hibernate XML and configs"/>
+
 		<copy todir="${classesdir}">
 			<fileset dir="${resourcedir}">
 				<include name="*.*"/>
+			</fileset>
+			<fileset dir="${hibernateconfigdir}">
+				<include name="**/*.*"/>
+				<exclude name="**/*.ftl"/>
 			</fileset>
 		</copy>
 
@@ -65,8 +125,7 @@
 				<include name="**/*.jar"/>
 			</fileset>
 		</copy>
-
-		<echo message="Copy *.properties"/>
+		<echo message="Copy *.properties ..."/>
 		<copy todir="${classesdir}/">
 			<fileset dir="${resourcedir}">
 				<include name="*.properties"/>
@@ -74,9 +133,8 @@
 		</copy>
 	</target>
 
-	<target name="all" depends="clean,compile,deploy">
+	<target name="all" depends="clean,reveng,compile,deploy">
 	</target>
-	
 	<target name="run" depends="compile">
 		<java fork="true"  classpathref="libraries">
 			<classpath path="${targetdir}"/>
